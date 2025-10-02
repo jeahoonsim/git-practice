@@ -1,5 +1,5 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QTextEdit, QVBoxLayout
+from PyQt6.QtWidgets import QApplication, QWidget, QPushButton, QTextEdit, QVBoxLayout, QHBoxLayout
 
 class Calculator(QWidget):
     """
@@ -20,7 +20,7 @@ class Calculator(QWidget):
         UI의 기본 설정을 초기화하는 메서드입니다.
         """
         # 창의 제목을 '계산기'로 설정합니다.
-        self.setWindowTitle('계산기')
+        self.setWindowTitle('버튼 예제')
         
         # 창의 위치와 크기를 설정합니다. (x, y, 너비, 높이)
         # 화면의 (300, 300) 위치에 400x500 크기의 창이 생성됩니다.
@@ -30,13 +30,22 @@ class Calculator(QWidget):
         self.text_edit = QTextEdit()
         
         # 메시지 버튼 생성
-        btn = QPushButton('메시지', self)
-        btn.clicked.connect(self.on_button_click)
+        msg_btn = QPushButton('메시지', self)
+        msg_btn.clicked.connect(self.on_button_click)
 
-        # 수직 레이아웃(QVBoxLayout) 생성
+        # Clear 버튼 생성
+        clear_btn = QPushButton('Clear', self)
+        clear_btn.clicked.connect(self.on_clear_button_click)
+
+        # 버튼들을 담을 수평 레이아웃(QHBoxLayout) 생성
+        hbox = QHBoxLayout()
+        hbox.addWidget(msg_btn)
+        hbox.addWidget(clear_btn)
+
+        # 전체 위젯을 담을 수직 레이아웃(QVBoxLayout) 생성
         vbox = QVBoxLayout()
         vbox.addWidget(self.text_edit) # 텍스트 에디터를 레이아웃에 추가
-        vbox.addWidget(btn)            # 버튼을 레이아웃에 추가
+        vbox.addLayout(hbox)           # 버튼들이 있는 수평 레이아웃을 추가
 
         self.setLayout(vbox) # 윈도우에 레이아웃 설정
 
@@ -45,6 +54,12 @@ class Calculator(QWidget):
         버튼 클릭 시 텍스트 에디터에 텍스트를 추가하는 슬롯 메서드입니다.
         """
         self.text_edit.append("button clicked")
+
+    def on_clear_button_click(self):
+        """
+        Clear 버튼 클릭 시 텍스트 에디터의 내용을 모두 지웁니다.
+        """
+        self.text_edit.clear()
 
 
 if __name__ == '__main__':
